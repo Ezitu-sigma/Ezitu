@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #button {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        #score {
+            margin-top: 20px;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        #upgrades {
+            margin-top: 20px;
+        }
+        .upgrade {
+            margin: 10px;
+            padding: 10px;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">0</div>
+    <img id="button" src="przycisk.jfji" alt="Click me">
+    <div id="upgrades">
+        <div class="upgrade" id="upgrade1">+10% per click (Cost: 10)</div>
+        <div class="upgrade" id="upgrade2">Autoclicker (Cost: 50)</div>
+    </div>
+
+    <script>
+        let counter = 0;
+        let pointsPerClick = 1;
+        let upgrade1Cost = 10;
+        let upgrade2Cost = 50;
+        let autoClickerInterval = 30000; // 30 seconds in milliseconds
+
+        const updateScore = () => {
+            document.getElementById('score').innerText = counter.toFixed(0);
+        };
+
+        document.getElementById('button').onclick = () => {
+            counter += pointsPerClick;
+            updateScore();
+        };
+
+        document.getElementById('upgrade1').onclick = () => {
+            if (counter >= upgrade1Cost) {
+                counter -= upgrade1Cost;
+                pointsPerClick *= 1.1; // Increase points per click by 10%
+                upgrade1Cost = Math.floor(upgrade1Cost * 1.5);
+                document.getElementById('upgrade1').innerText = `+10% per click (Cost: ${upgrade1Cost})`;
+                updateScore();
+            }
+        };
+
+        document.getElementById('upgrade2').onclick = () => {
+            if (counter >= upgrade2Cost) {
+                counter -= upgrade2Cost;
+                upgrade2Cost = Math.floor(upgrade2Cost * 1.5);
+                document.getElementById('upgrade2').innerText = `Autoclicker (Cost: ${upgrade2Cost})`;
+                updateScore();
+
+                if (autoClickerInterval > 500) { // Minimum interval of 0.5 seconds
+                    autoClickerInterval -= 500;
+                }
+
+                setInterval(() => {
+                    counter += pointsPerClick;
+                    updateScore();
+                }, autoClickerInterval);
+            }
+        };
+    </script>
+</body>
+</html>
